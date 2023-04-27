@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MP3 player</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="static/style.css" />
+  </head>
+  <body>
+    <img id="knight" src="img/knigth.jpg" />
+    <img id="marine" src="img/marine.gif" />
+    <div id="main">
+      <div id="logo">
+        <h1 id="Logo">W40K player</h1>
+        <img id="album-cover" src="img/logo.gif" />
+      </div>
+
+      <div class="speedcontrolcontainer">
+        <audio id="player" src="audio/reset.mp3" controls></audio>
+        <div>
+          <label id="speed" for="pbrate">Speed:</label>
+          <input
+            type="range"
+            id="pbrate"
+            min=".5"
+            max="2"
+            value="1"
+            step=".1"
+          />
+          <span id="spanSpeed"></span>
+        </div>
+      </div>
+
+      <container id="buttons">
+        <button id="playButton">Play</button>
+        <button id="vol-up">Volume up</button>
+        <button id="vol-down">Volume down</button>
+        <button onclick="previousSong()">Previous</button>
+        <button onclick="nextSong()">Next</button>
+        <button onclick="mute()">Mute</button>
+      </container>
+
+      <form id="song-form" method="post" action="/addSong" enctype="multipart/form-data">
+        <label for="song-file">Song File:</label>
+<input type="file" id="song-file" name="songFile"><br><br>
+        <button type="submit">Add Song</button>
+      </form>
+
+
+<form id="youtube-form" action="/api/posts/submit" method="POST">
+  <legend for="title">Title</legend>
+  <input type="text" id="Title" name="Title" required />
+  <br>
+  <legend for="url">URL</legend>
+  <input type="text" id="URL" name="URL" required />
+<br>
+  <button id="submitButt" type="submit">Submit</button>
+</form>
+
+<table id="urlTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data2.forEach((row, index) => { %>
+    <tr>
+      <td class="song-index"><%= index + 1 + ". " %></td>
+      <td><%= row.title %></td>
+      <td><a href="<%= row.url %>" target="_blank"><%= row.url %></a></td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+
+      <container id="songList">
+        <% data.forEach((item,index) => { %>
+        <button
+          id="song-<%=index%>"
+          class="song-button"
+          onclick="playSong(songs[<%=index%>])"
+        >
+          <div class="song-index"><%= index + 1 + ". " %></div>
+          <div class="song-title"><%= item.title %></div>
+          <div class="song-duration"><%= item.duration %></div>
+        </button>
+
+        <% }) %>
+      </container>
+    </div>
+
+    <img id="orc" src="img/orc.gif" />
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>
